@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bandhan - Preview</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #C4447A;
+            --primary-dark: #9B2D5C;
+            --secondary: #2D2D5B;
+            --success: #22C55E;
+            --surface: #FAFAFA;
+            --text-primary: #111827;
+            --text-muted: #6B7280;
+            --border: #E5E7EB;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .phone-frame {
+            width: 375px;
+            height: 812px;
+            background-color: var(--surface);
+            border-radius: 40px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            overflow: hidden;
+            position: relative;
+            border: 8px solid #222;
+        }
+
+        .status-bar {
+            height: 44px;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .app-header {
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .app-header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 22px;
+            color: var(--primary);
+            margin: 0;
+        }
+
+        .content {
+            padding: 0 16px;
+            height: calc(100% - 150px);
+            overflow-y: auto;
+        }
+
+        .section-header {
+            margin: 20px 0 16px;
+        }
+
+        .section-header h2 {
+            font-size: 18px;
+            margin: 0;
+            color: var(--text-primary);
+        }
+
+        .section-header p {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin: 4px 0 0;
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .profile-img {
+            height: 350px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .badge-ai {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .badge-verified {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background: var(--success);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .profile-info-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: white;
+        }
+
+        .profile-info-overlay h3 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        .profile-info-overlay p {
+            margin: 4px 0 0;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .ai-reason {
+            padding: 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .ai-reason h4 {
+            font-size: 12px;
+            color: var(--primary);
+            margin: 0 0 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .ai-reason p {
+            font-size: 13px;
+            margin: 0;
+            line-height: 1.4;
+            color: var(--text-primary);
+        }
+
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 80px;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid var(--border);
+            padding-bottom: 20px;
+        }
+
+        .nav-item {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        .nav-icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        /* Active avatars */
+        .active-list {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .avatar-wrap {
+            text-align: center;
+        }
+
+        .avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-size: cover;
+            border: 2px solid white;
+            box-shadow: 0 0 0 2px var(--primary);
+            position: relative;
+        }
+
+        .status-dot {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            width: 12px;
+            height: 12px;
+            background: var(--success);
+            border: 2px solid white;
+            border-radius: 50%;
+        }
+
+        .avatar-name {
+            font-size: 11px;
+            margin-top: 6px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-frame">
+        <div class="status-bar">
+            <span>9:41</span>
+            <div style="display: flex; gap: 4px;">
+                <span>📶</span>
+                <span>🔋</span>
+            </div>
+        </div>
+        
+        <div class="app-header">
+            <h1>Bandhan</h1>
+            <div style="font-size: 20px;">🔔</div>
+        </div>
+
+        <div class="content">
+            <div class="section-header">
+                <h2>Today's Matches</h2>
+                <p>3 matches found</p>
+            </div>
+
+            <div class="profile-card">
+                <div class="profile-img" style="background-image: url('https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800')">
+                    <div class="badge-verified">✓ Verified</div>
+                    <div class="badge-ai">❤ 92%</div>
+                    <div class="profile-info-overlay">
+                        <h3>Priya Sharma, 27</h3>
+                        <p>Software Engineer • Mumbai</p>
+                    </div>
+                </div>
+                <div class="ai-reason">
+                    <h4>Why this match?</h4>
+                    <p>You both value career growth and have a marriage timeline of within 1 year.</p>
+                </div>
+            </div>
+
+            <div class="section-header">
+                <h2>Recently Active</h2>
+                <p>Profiles online now</p>
+            </div>
+
+            <div class="active-list">
+                <div class="avatar-wrap">
+                    <div class="avatar" style="background-image: url('https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200')">
+                        <div class="status-dot"></div>
+                    </div>
+                    <div class="avatar-name">Meera</div>
+                </div>
+                <div class="avatar-wrap">
+                    <div class="avatar" style="background-image: url('https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200')">
+                        <div class="status-dot"></div>
+                    </div>
+                    <div class="avatar-name">Kajal</div>
+                </div>
+                <div class="avatar-wrap">
+                    <div class="avatar" style="background-image: url('https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200')">
+                        <div class="status-dot"></div>
+                    </div>
+                    <div class="avatar-name">Anjali</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom-nav">
+            <div class="nav-item active">
+                <div class="nav-icon">🏠</div>
+                Home
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon">🔍</div>
+                Discover
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon">❤</div>
+                Matches
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon">💬</div>
+                Chat
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon">👤</div>
+                Profile
+            </div>
+        </div>
+    </div>
+</body>
+</html>

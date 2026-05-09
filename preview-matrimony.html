@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bandhan Matrimony - Premium Matchmaking</title>
+    <!-- React & Babel Standalone -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+    <!-- Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { margin: 0; padding: 0; background: #e2e8f0; min-height: 100vh; display: flex; justify-content: center; }
+        #root { width: 100%; max-width: 480px; background: #fffbeb; min-height: 100vh; box-shadow: 0 0 100px rgba(0,0,0,0.1); position: relative; overflow-x: hidden; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        // CONFIGURATION
+        const SUPABASE_URL = 'https://jrtyluvpgaizsgvyurnot.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpydHlsdXZwZ2F6c2d2eXVybm90Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgzODUyMDksImV4cCI6MjA5Mzk2MTIwOX0.Hukc5tUpMumdkcM7dK5zXDFesQzBjNizK2CpSXH5eIE';
+        
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        async function loadApp() {
+            try {
+                const response = await fetch('bandhan-matrimony.jsx');
+                let code = await response.text();
+                // Remove imports since we are in a standalone script
+                code = code.replace(/import\s+[^;]+from\s+['"][^'"]+['"];?/g, '');
+                code = code.replace(/export\s+default\s+/, '');
+                
+                // Inject React hooks and Supabase client into the component scope
+                const Component = eval(`(function() {
+                    const { useState, useEffect, useRef } = React;
+                    const client = supabaseClient; 
+                    ${code}
+                    return MatrimonyApp;
+                })()`);
+
+                const root = ReactDOM.createRoot(document.getElementById('root'));
+                root.render(React.createElement(Component));
+            } catch (e) {
+                console.error("Failed to load app", e);
+                document.getElementById('root').innerHTML = `<div style="padding: 20px; color: red;">Failed to load app: ${e.message}</div>`;
+            }
+        }
+        loadApp();
+    </script>
+</body>
+</html>
